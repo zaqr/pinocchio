@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+    producer:
+        build: ./producer
+        environment:
+            KAFKA_BROKER_URL: broker:9092
+            MUTATIONS_TOPIC: queueing.mutations
+            TPS: 2
+#
+#    consumer:
+#        build: ./consumer
+#        environment:
+#            KAFKA_BROKER_URL: broker:9092
+#            MUTATIONS_TOPIC: queueing.mutations
+#            SOBAT_MISQUEEN_TOPIC: streaming.mutations.misqueen
+#            HYPE_LADS_TOPIC: streaming.mutations.hype
+
+networks:
+    default:
+        external:
+            name: kafka-demo-network
