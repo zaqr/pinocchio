@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+    consumer_print:
+        build: ./consumer_print
+        environment:
+            CONSUMER_GROUP: print-group
+            KAFKA_BROKER_URL: broker:9092
+            MUTATIONS_TOPIC: queueing.mutations
+
+networks:
+    default:
+        external:
+            name: kafka-demo-network
