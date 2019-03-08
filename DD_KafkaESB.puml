@@ -1,10 +1,39 @@
 @startuml
-(*)  --> "check input"
-If "input is verbose" then
---> [Yes] "turn on verbosity"
---> "run command"
-else
---> "run command"
-Endif
--->(*)
+skinparam handwritten true
+
+artifact "Web Portal" {
+    node "Web Server" as webportal_server
+    database "MySQL" as webportal_db
+}
+webportal_server - webportal_db
+
+artifact "That One App" {
+  database "PostgreSQL" as postgresql
+  node "Fancy App" as newapp
+}
+
+database "Data Warehouse" as datawarehouse
+node "ETL" as etl
+node "Backoffice Webapp" as backoffice
+node "Cache Updater" as cache
+node "Monitoring Server" as monitoring
+node "NFS" as nfs_1
+node "nginx Balancer" as nginx
+node "Redis Cache" as redis
+queue "Kafka" as kafka
+
+nginx --- newapp
+nginx --- redis
+nginx --- webportal_server
+cache -- kafka
+webportal_server -- kafka
+kafka -- backoffice
+kafka --- monitoring
+kafka -- etl
+etl -- datawarehouse
+backoffice - nfs_1
+redis -- cache
+newapp -- kafka
+newapp -- postgresql
+
 @enduml
